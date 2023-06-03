@@ -1,5 +1,5 @@
 import string
-
+from collections import Counter
 def countdays(fname):
     counts = dict()
     with open(fname) as han:
@@ -82,12 +82,27 @@ def lettercount(fname):
     for i in result:
         b,a=i
         resultstr = resultstr + str(a) + " " + str(b) + "\n"
+
+
     return (resultstr.rstrip())
     return "n 4\na 3\nc 2\nd 1\nb 1"
 
+#uses Counter()
+def letterscounter(fname):
+    counts = Counter()
+    with open (fname) as file:
+        for line in file:
+            line = line.rstrip().lower().replace(" ", "").translate(str.maketrans('', '', string.punctuation))
+            counts.update(line)
+            #counts.update(line.translate(str.maketrans('', '', string.punctuation)))
+    resultstr = ""
+    resultstr = resultstr.join(resultstr + i + " " + str(counts[i]) + "\n" for i in counts)
+    return ( resultstr.rstrip())
+
+
 if __name__ == "__main__":
     #print(countdays())
-    print(lettercount("romeo-full.txt"))
+    print(letterscounter("clown-short.txt"))
 
 
 def test_countdays():
@@ -110,3 +125,7 @@ def test_timeofday():
 def test_lettercount():
     expected = "n 4\na 3\nc 2\nd 1\nb 1"
     assert lettercount("clown-short.txt") == expected
+
+def test_letterscounter():
+    expected = "n 4\na 3\nc 2\nd 1\nb 1"
+    assert letterscounter("clown-short.txt") == expected
